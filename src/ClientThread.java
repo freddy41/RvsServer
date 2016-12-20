@@ -38,6 +38,7 @@ public class ClientThread extends Thread {
                     return;
                 } else {					// hir müsste man noch die nachricht zusammenstellen und ein neues
                 							// message objekt basteln 
+                							//z.b. swich case über die erste zeile ( was tun wenn ein befehl kommt )
                 	server.addMessage(new Nachricht(1,  new java.util.Date(),"thema","textthread"));// nur zum testen 
                 }
             } catch (IOException e) {
