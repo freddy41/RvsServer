@@ -8,6 +8,10 @@ import java.util.Date;
 public class Server 
 {
 	public static ArrayList<Nachricht> nachrichten;
+	public static void main(String[] args) {
+		
+		Server s = new Server();
+	}
 
 	public Server() {
 		
