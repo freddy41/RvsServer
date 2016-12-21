@@ -1,42 +1,42 @@
-import java.util.Date;
+
 
 public class Nachricht {
-	private int zeilenzahl ;
-	private Date date;
-	private String thema;
+	private int numLines ;
+	private int timestamp;
+	private String topic;
 	private String text;
 	
-	public Nachricht(int z, Date d, String th, String te)
+	public Nachricht(int z, int ti, String to, String te)
 	{
-		this.zeilenzahl = z;
-		this.date = d;
-		this.thema= th;
+		this.numLines = z;
+		this.timestamp = ti;
+		this.topic= to;
 		this.text= te;
 		
 	}
 
-	public int getZeilenzahl() {
-		return zeilenzahl;
+	public int getNumLines() {
+		return numLines;
 	}
 
-	public void setZeilenzahl(int zeilenzahl) {
-		this.zeilenzahl = zeilenzahl;
+	public void setNumLines(int zeilenzahl) {
+		this.numLines = zeilenzahl;
 	}
 
-	public Date getDate() {
-		return date;
+	public int getTimestamp() {
+		return timestamp;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setTimestamp(int timestamp) {
+		this.timestamp = timestamp;
 	}
 
-	public String getThema() {
-		return thema;
+	public String getTopic() {
+		return topic;
 	}
 
-	public void setThema(String thema) {
-		this.thema = thema;
+	public void setTopic(String topic) {
+		this.topic = topic;
 	}
 
 	public String getText() {

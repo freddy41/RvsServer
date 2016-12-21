@@ -38,9 +38,10 @@ public class ConnectionHandler extends Thread {
 	                System.out.println("Error creating thread nr " +connections.size() );
 	            }
 	           
-	            connections.add(new ClientThread(socket, threadnr, server));	// neuer Thread  für jede verbindung 
+	            connections.add(new ClientThread(socket, threadnr, server));	// neuer Thread  fï¿½r jede verbindung 
 	            connections.get(connections.size()-1).start();			// neuen Thread starten 
 	            threadnr++;
+	            System.out.println(connections.size());
 	           
 			
 			}
