@@ -1,13 +1,12 @@
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Server 
 {
-	public static ArrayList<Nachricht> nachrichten;
+	public static List<Nachricht> nachrichten;
+	public static ConnectionHandler handler; // verwaltet die client threads
 	public static void main(String[] args) {
 		
 		Server s = new Server();
@@ -15,23 +14,55 @@ public class Server
 
 	public Server() {
 		
-		ConnectionHandler handler = new ConnectionHandler(this);// verwaltet die client threads /
-		nachrichten = new ArrayList<Nachricht>();				// bekommt this �bergeben und gibt das objekt an 
-																//die clientthreads  weiter damit diese auch addmessage
-																//ausf�hren k�nnen 
-		handler.start();										// startet handle.run()
+		handler = new ConnectionHandler(this);
+		nachrichten = new ArrayList<Nachricht>(); //Server an Connection Handler übergeben
+												
+		handler.start(); //startet handler.run()
 	}
 	// hier gibt es potenziell Problem weil mehrere threads auf nachrichten zugreifen. 
-	public void addMessage(Nachricht n)
-	{
+	public void addMessage(Nachricht n) {
 		nachrichten.add(n);
 	}
-	public synchronized ArrayList<Nachricht> getMessagesSince(int timestamp)// returnt eine liste mit Nachrichten nach dem Datum
+	
+	public List<Nachricht> getMessagesSince(int timestamp)// returnt eine liste mit Nachrichten nach dem Datum
 	{																 // bisher noch nicht verwendet 
-		ArrayList<Nachricht> result =new ArrayList<Nachricht>();
+		List<Nachricht> result =new ArrayList<Nachricht>();
 		for (Nachricht n: nachrichten) {
 		    if(n.getTimestamp()>=timestamp) result.add(n);
 		}
 		return result;
+	}
+	
+	public List<Nachricht> getMessagesByTopic(String topic) {
+		List<Nachricht> result = new ArrayList<Nachricht>();
+		for (Nachricht n: nachrichten) {
+		    if(n.getTopic().equals(topic)) result.add(n);
+		}
+		result.sort((Nachricht o1, Nachricht o2) -> {
+			return o2.getTimestamp()-o1.getTimestamp();
+		});
+		return result;
+	}
+	
+	public List<Nachricht> getMessagesByChangedTopic(int numTopics) {
+		nachrichten.sort((Nachricht o1, Nachricht o2) -> {
+			return o2.getTimestamp()-o1.getTimestamp();
+		});
+		
+		List<Nachricht> result = new ArrayList<Nachricht>();
+		Set<String> containedTopics = new HashSet<String>();
+		
+		for(int i=0; i<nachrichten.size(); i++) {
+			if(!containedTopics.contains(nachrichten.get(i).getTopic())) {
+				result.add(nachrichten.get(i));
+				containedTopics.add(nachrichten.get(i).getTopic());
+				if(containedTopics.size()>=numTopics) break;
+			}		
+		}
+		return result;
+	}
+	
+	public void closeConnection(ClientThread clientThread) {
+		handler.removeClientThread(clientThread);
 	}
 }

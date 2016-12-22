@@ -50,5 +50,9 @@ public class ConnectionHandler extends Thread {
 	{
 		return connections;
 	}
+	
+	public void removeClientThread(ClientThread clientThread) {
+		connections.remove(clientThread);
+	}
 
 }
