@@ -1,18 +1,16 @@
 
-
 public class Nachricht {
-	private int numLines ;
-	private int timestamp;
-	private String topic;
-	private String text;
-	
-	public Nachricht(int z, int ti, String to, String te)
-	{
+	private int numLines; // Anzahl der Zeilen
+	private int timestamp; // Timestamp der Nachricht
+	private String topic; // Thema der Nachricht
+	private String text; // Text der Nachricht
+
+	public Nachricht(int z, int ti, String to, String te) {
 		this.numLines = z;
 		this.timestamp = ti;
-		this.topic= to;
-		this.text= te;
-		
+		this.topic = to;
+		this.text = te;
+
 	}
 
 	public int getNumLines() {
@@ -47,5 +45,4 @@ public class Nachricht {
 		this.text = text;
 	}
 
-	
 }
