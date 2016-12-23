@@ -10,25 +10,25 @@ public class Server {
 
 	public static void main(String[] args) {
 
-		Server s = new Server();
+		new Server();
 	}
 
 	public Server() {
 
 		handler = new ConnectionHandler(this);
-		// Server an Connection Handler übergeben
+		// Server an Connection Handler uebergeben
 		nachrichten = Collections.synchronizedList(new ArrayList<Nachricht>());
 
 		handler.start(); // startet handler.run()
 	}
 
-	// fügt eine neue Nachricht der Liste hinzu
+	// fuegt eine neue Nachricht der Liste hinzu
 	public void addMessage(Nachricht n) {
 		nachrichten.add(n);
 	}
 
 	// gibt eine Liste aller Nachrichten ab einem spezifizierten Zeitpunkt
-	// zurück
+	// zurueck
 	public List<Nachricht> getMessagesSince(int timestamp) {
 		List<Nachricht> result = new ArrayList<Nachricht>();
 		synchronized (nachrichten) {
@@ -40,7 +40,7 @@ public class Server {
 		return result;
 	}
 
-	// gibt eine Liste aller Nachrichten zu einem bestimmten Thema zurück
+	// gibt eine Liste aller Nachrichten zu einem bestimmten Thema zurueck
 	public List<Nachricht> getMessagesByTopic(String topic) {
 		List<Nachricht> result = new ArrayList<Nachricht>();
 		synchronized (nachrichten) {
@@ -56,8 +56,8 @@ public class Server {
 		return result;
 	}
 
-	// gibt eine Liste von Nachrichten zurück, die von den <numTopicc> zuletzt
-	// geänderten Themen die jeweils jüngste Nachricht enthält.
+	// gibt eine Liste von Nachrichten zurueck, die von den <numTopicc> zuletzt
+	// geaenderten Themen die jeweils juengste Nachricht enthaelt.
 	public List<Nachricht> getMessagesByChangedTopic(int numTopics) {
 
 		List<Nachricht> result = new ArrayList<Nachricht>();
@@ -73,7 +73,7 @@ public class Server {
 				if (!containedTopics.contains(nachrichten.get(i).getTopic())) {
 					result.add(nachrichten.get(i));
 					containedTopics.add(nachrichten.get(i).getTopic());
-					// überprüfen, ob die gewünschte Anzahl von geänderten
+					// ueberpruefen, ob die gewuenschte Anzahl von geaenderten
 					// Themen erreicht wurde
 					if (containedTopics.size() >= numTopics)
 						break;
@@ -88,7 +88,7 @@ public class Server {
 		handler.removeClientThread(clientThread);
 	}
 
-	// gibt Anzahl der gespeicherten Nachrichten zurück
+	// gibt Anzahl der gespeicherten Nachrichten zurueck
 	public int getNachrichtenSize() {
 		return nachrichten.size();
 	}

@@ -32,6 +32,7 @@ public class ClientThread extends Thread {
 			inputReader = new BufferedReader(new InputStreamReader(input));
 			out = new DataOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
+			System.err.println("Failed to create i/o-streams" );
 			return;
 		}
 
@@ -48,7 +49,7 @@ public class ClientThread extends Thread {
 					continue;
 				}
 				System.out.println("line: " + line);
-				// alle möglichen Client-Anfragen überprüfen
+				// alle moeglichen Client-Anfragen ueberpruefen
 				switch (line.charAt(0)) {
 				case 'W':
 					returnMessagesByTimestamp(line);
@@ -81,7 +82,7 @@ public class ClientThread extends Thread {
 	// Client
 	private void returnMessagesByTimestamp(String line) throws IOException {
 		System.out.println("entered returnMessagesByTimestamp-method");
-		// Anfrage-Format prüfen
+		// Anfrage-Format pruefen
 		Pattern pattern = Pattern.compile("W (\\d+)");
 		Matcher matcher = pattern.matcher(line);
 		if (!matcher.matches()) {
@@ -98,7 +99,7 @@ public class ClientThread extends Thread {
 	// speichert eine Liste von empfangenen Nachrichten
 	private void readMessages(String line) throws IOException {
 		System.out.println("entered readMessages-method");
-		// Anfrage-Format überprüfen
+		// Anfrage-Format ueberpruefen
 		if (!line.equals("P")) {
 			errorMessage("Format inkorrekt");
 			return;
@@ -118,10 +119,10 @@ public class ClientThread extends Thread {
 			if (!line.matches("\\d+")) {
 				errorMessage("Format inkorrekt");
 				return;
-			} // Format der ersten Nachrichten-Zeile überprüfen
+			} // Format der ersten Nachrichten-Zeile ueberpruefen
 			int numLines = Integer.parseInt(line); // Anzahl der Zeilen einlesen
 			System.out.println("numLines: " + numLines);
-			// Format der zweiten Nachrichten-Zeile überprüfen
+			// Format der zweiten Nachrichten-Zeile ueberpruefen
 			Pattern pattern = Pattern.compile("\\d+ (.+)");
 			Matcher matcher = pattern.matcher(inputReader.readLine());
 			if (!matcher.matches()) {
@@ -150,7 +151,7 @@ public class ClientThread extends Thread {
 	// Client
 	private void returnMessagesByTopic(String line) throws IOException {
 		System.out.println("entered returnMessagesByTopic-method");
-		// Anfrage-Format überprüfen
+		// Anfrage-Format ueberpruefen
 		Pattern pattern = Pattern.compile("T (.+)");
 		Matcher matcher = pattern.matcher(line);
 		if (!matcher.matches()) {
@@ -179,11 +180,11 @@ public class ClientThread extends Thread {
 		}
 	}
 
-	// sendet eine Liste der x zuletzt geänderten Themen an den Client
+	// sendet eine Liste der x zuletzt geaenderten Themen an den Client
 	private void returnListOfChangedTopics(String line) throws IOException {
 		System.out.println("entered returnListOfChangedTopics-method");
 		int numTopics;
-		// Anfrage-Format überprüfen
+		// Anfrage-Format ueberpruefen
 		Pattern pattern = Pattern.compile("L (\\d+)");
 		Matcher matcher = pattern.matcher(line);
 		if (!(line.equals("L") || matcher.matches())) {
