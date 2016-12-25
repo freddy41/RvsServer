@@ -111,6 +111,10 @@ public class ClientThread extends Thread {
 		}
 		// Anzahl der zu speichernden Nachrichten auslesen
 		int numOfMessages = Integer.parseInt(line);
+		if(numOfMessages<1){
+			errorMessage("Mindestens eine Nachricht senden");
+			return;
+		}
 		System.out.println("numMessages: " + numOfMessages);
 		List<Nachricht> newMessages = new ArrayList<Nachricht>();
 		// Nachrichten einlesen
@@ -120,7 +124,13 @@ public class ClientThread extends Thread {
 				errorMessage("Format inkorrekt");
 				return;
 			} // Format der ersten Nachrichten-Zeile ueberpruefen
-			int numLines = Integer.parseInt(line); // Anzahl der Zeilen einlesen
+			int numLines = Integer.parseInt(line);
+			if(numLines<2){
+				errorMessage("Mindestens 2 Zeilen pro Nachrichten");
+				return;
+			}
+				
+			// Anzahl der Zeilen einlesen
 			System.out.println("numLines: " + numLines);
 			// Format der zweiten Nachrichten-Zeile ueberpruefen
 			Pattern pattern = Pattern.compile("\\d+ (.+)");
