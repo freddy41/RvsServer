@@ -25,6 +25,12 @@ public class ConnectionHandler extends Thread {
 			ssocket.bind(new InetSocketAddress(port));
 
 		} catch (IOException e) {
+			try {
+				ssocket.close();		//sicher ist sicher koennte ja noch offen sein 
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				
+			}
 			System.err.println("Failed to create socket at port:"+ port );
 			e.printStackTrace();
 			System.exit(-1);

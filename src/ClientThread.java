@@ -27,12 +27,20 @@ public class ClientThread extends Thread {
 	}
 
 	public void run() {
+		// in und outputstreams
 		try {
 			input = socket.getInputStream();
 			inputReader = new BufferedReader(new InputStreamReader(input));
 			out = new DataOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
+			try {
+				disconnect("X");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			System.err.println("Failed to create i/o-streams" );
+			
 			return;
 		}
 
@@ -41,7 +49,7 @@ public class ClientThread extends Thread {
 			try {
 				line = inputReader.readLine();
 				if (line == null) {
-					disconnet("X");
+					disconnect("X");
 					return;
 				}
 				if (line.isEmpty()) {
@@ -64,7 +72,7 @@ public class ClientThread extends Thread {
 					returnListOfChangedTopics(line);
 					break;
 				case 'X':
-					disconnet(line);
+					disconnect(line);
 					break;
 				default:
 					errorMessage("Befehl unbekannt");
@@ -72,6 +80,7 @@ public class ClientThread extends Thread {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
+				
 				return;
 			}
 		}
@@ -220,10 +229,10 @@ public class ClientThread extends Thread {
 	}
 
 	// beendet die Verbindung
-	private void disconnet(String line) throws IOException {
+	private void disconnect(String line) throws IOException {
 		System.out.println("entered disconnet-method");
 		if (line.equals("X")) {
-			socket.close(); // Socket schließen
+			socket.close(); // Socket schliessen
 			// Client aus der Liste der Connections entfernen
 			server.closeConnection(this);
 			terminate();
