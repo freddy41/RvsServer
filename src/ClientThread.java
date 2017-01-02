@@ -47,6 +47,7 @@ public class ClientThread extends Thread {
 		String line;
 		while (!terminate) {
 			try {
+			
 				line = inputReader.readLine();
 				if (line == null) {
 					disconnect("X");
@@ -78,11 +79,20 @@ public class ClientThread extends Thread {
 					errorMessage("Befehl unbekannt");
 					break;
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
 				
+			} catch (IOException e) {
+				
+				if(e.getMessage().contains("Connection reset"))// verbindung abgebrochen 
+				{
+					try {
+						disconnect("X");
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
 				return;
 			}
+			
 		}
 
 	}
@@ -256,11 +266,21 @@ public class ClientThread extends Thread {
 
 	public void writeToClient(String string) {
 		System.out.println("entered writeToClient-method");
+		
 		try {
 			synchronized (out) {
+			
 				out.writeChars(string);
 			}
 		} catch (IOException e) {
+			if(e.getMessage().contains("Connection reset"))
+			{
+				try {
+					disconnect("X");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
 			e.printStackTrace(); // Client vermutlich disconnected
 		}
 	}
