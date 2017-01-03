@@ -39,15 +39,15 @@ public class ClientThread extends Thread {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			System.err.println("Failed to create i/o-streams" );
-			
+			System.err.println("Failed to create i/o-streams");
+
 			return;
 		}
 
 		String line;
 		while (!terminate) {
 			try {
-			
+
 				line = inputReader.readLine();
 				if (line == null) {
 					disconnect("X");
@@ -79,10 +79,11 @@ public class ClientThread extends Thread {
 					errorMessage("Befehl unbekannt");
 					break;
 				}
-				
+
 			} catch (IOException e) {
-				
-				if(e.getMessage().contains("Connection reset"))// verbindung abgebrochen 
+
+				if (e.getMessage().contains("Connection reset"))// verbindung
+																// abgebrochen
 				{
 					try {
 						disconnect("X");
@@ -92,7 +93,7 @@ public class ClientThread extends Thread {
 				}
 				return;
 			}
-			
+
 		}
 
 	}
@@ -130,7 +131,7 @@ public class ClientThread extends Thread {
 		}
 		// Anzahl der zu speichernden Nachrichten auslesen
 		int numOfMessages = Integer.parseInt(line);
-		if(numOfMessages<1){
+		if (numOfMessages < 1) {
 			errorMessage("Mindestens eine Nachricht senden");
 			return;
 		}
@@ -144,11 +145,11 @@ public class ClientThread extends Thread {
 				return;
 			} // Format der ersten Nachrichten-Zeile ueberpruefen
 			int numLines = Integer.parseInt(line);
-			if(numLines<2){
+			if (numLines < 2) {
 				errorMessage("Mindestens 2 Zeilen pro Nachrichten");
 				return;
 			}
-				
+
 			// Anzahl der Zeilen einlesen
 			System.out.println("numLines: " + numLines);
 			// Format der zweiten Nachrichten-Zeile ueberpruefen
@@ -265,16 +266,14 @@ public class ClientThread extends Thread {
 	}
 
 	public void writeToClient(String string) {
-		System.out.println("entered writeToClient-method");
-		
+
 		try {
 			synchronized (out) {
-			
+
 				out.writeChars(string);
 			}
 		} catch (IOException e) {
-			if(e.getMessage().contains("Connection reset"))
-			{
+			if (e.getMessage().contains("Connection reset")) {
 				try {
 					disconnect("X");
 				} catch (IOException e1) {
